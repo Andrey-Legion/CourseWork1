@@ -1,14 +1,16 @@
+import java.util.Objects;
+
 public class Employee {
-    public static int id;               //будет меняться одновременно у всех.
-    static int quantityOfEmployees = 2; //лучше ввести доп поле,которое и будет хранить значение последнего ид
+    private final int id;
+    private static int quantityOfEmployees = 1;
     private final String firstName;
-    private final String secondName;
+    private final String  secondName;
     private final String thirdName;
     private String department;
     private double salary;
 
     public Employee (String firstName,String secondName,String thirdName,String department,double salary) {
-        id++;
+        this.id=quantityOfEmployees++;
         this.firstName = firstName;
         this.secondName = secondName;
         this.thirdName = thirdName;
@@ -45,12 +47,26 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", thirdName='" + thirdName + '\'' +
                 ", department='" + department + '\'' +
                 ", salary=" + salary +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return id == employee.id && Double.compare(employee.salary, salary) == 0 && Objects.equals(firstName, employee.firstName) && Objects.equals(secondName, employee.secondName) && Objects.equals(thirdName, employee.thirdName) && Objects.equals(department, employee.department);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, secondName, thirdName, department, salary);
     }
 }
 
